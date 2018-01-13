@@ -8,5 +8,16 @@ module.exports = {
     path: path.resolve(__dirname),
     filename: 'bundle.js',
   },
-  plugins: [new HtmlWebpackPlugin()],
+  plugins: [
+    new HtmlWebpackPlugin({
+      filename: 'index.html',
+      template: './index.template.html',
+      inject: 'body',
+    }),
+    new HtmlWebpackPlugin({
+      filename: 'greeting/index.html',
+      template: './greeting.template.html',
+      inject: 'body',
+    }),
+  ],
 }
