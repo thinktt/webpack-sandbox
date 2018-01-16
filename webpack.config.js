@@ -1,6 +1,32 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+const fs = require('fs');
+
+const plugins = [
+  new CleanWebpackPlugin(['static/*', 'static/**/*']),
+  new HtmlWebpackPlugin({
+    filename: 'index.html',
+    template: './src/index.html',
+    inject: 'body',
+  }),
+];
+
+fs.readdirSync(path.resolve('./src')).forEach(file => {
+  if ( /\.(html)$/.test(file) && file !== 'index.html' ) { 
+    const name = file.substring(0, file.lastIndexOf('.'));
+    console.log('Creating html-webpack-plugin for ' + file);
+    plugins.push(
+      new HtmlWebpackPlugin({
+        filename: name + '/index.html',
+        template: './src/' +  file,
+        inject: 'body',
+      })
+    );
+  }
+});
+
+//console.log(plugins);
 
 module.exports = {
   entry: './src/main.js',
@@ -9,27 +35,6 @@ module.exports = {
     path: path.resolve(__dirname, 'static'),
     filename: 'bundle.js',
   },
-  module: {
-    rules: [
-      {
-        test: /\.(html)$/, 
-        use: [{
-          loader: 'file-loader',
-          options: {
-            name: '[name]/index.[ext]',
-          },
-        }],
-        exclude: path.resolve(__dirname, 'src/index.html')
-      }
-    ],
-  },
-  plugins: [
-    new CleanWebpackPlugin(['static/*', 'static/**/*']),
-    new HtmlWebpackPlugin({
-      filename: 'index.html',
-      template: './src/index.html',
-      inject: 'body',
-    }),
-  ],
+  plugins: plugins,
 }
 
