@@ -12,7 +12,7 @@
 </template>
 
 <script>
-module.exports = {
+export default {
   data: function() {
     return {
       greeting: 'Howdy!',
@@ -25,11 +25,13 @@ module.exports = {
     }
   }
 }
+
+console.log("I'm in the template!")
 </script>
 
 <style>
 h1 {
-  font-size: 100px;
+  font-size: 50px;
 }
   
 </style>

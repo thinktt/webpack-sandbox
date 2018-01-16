@@ -2,19 +2,21 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const fs = require('fs');
+const webpack = require('webpack');
 
 
 module.exports = {
-  entry: './src/main.js',
+  entry: './src/js/main.js',
   devtool: 'inline-source-map',
   resolve: {
     alias: {
-      'vue$': 'vue/dist/vue.esm.js'
+      'vue$': 'vue/dist/vue.esm.js',
+      components: path.resolve(__dirname, 'src/components/'),
     },
     extensions: ['*', '.js', '.vue', '.json']
   },
   output: {
-    path: path.resolve(__dirname, 'static'),
+    path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.js',
   },
   module: {
@@ -22,16 +24,16 @@ module.exports = {
       {
         test: /\.vue$/,
         loader: 'vue-loader',
-        options: {
-          loaders: {
-          }
-          // other vue-loader options go here
-        }
+        options: {loaders: {}}
       },
+      // {
+      //   test: /\.js$/,
+      //   loader: 'babel-loader',
+      //   exclude: /node_modules/
+      // },
     ]
   },
   plugins: [
-    new CleanWebpackPlugin(['static/*', 'static/**/*']),
     new HtmlWebpackPlugin({
       filename: 'index.html',
       template: './src/index.html',
@@ -57,15 +59,45 @@ fs.readdirSync(path.resolve('./src')).forEach(file => {
 });
 
 
+if (process.env.NODE_ENV === 'production') {
+  module.exports.devtool = '#source-map';
+  // http://vue-loader.vuejs.org/en/workflow/production.html
+  module.exports.plugins = (module.exports.plugins || []).concat([
+    new CleanWebpackPlugin(['dist/*', 'dist/**/*']),
+    new webpack.DefinePlugin({
+      'process.env': {
+        NODE_ENV: '"production"'
+      }
+    }),
+    new webpack.optimize.UglifyJsPlugin({
+      sourceMap: true,
+      compress: {
+        warnings: false
+      }
+    }),
+    new webpack.LoaderOptionsPlugin({
+      minimize: true
+    })
+  ])
+
+  module.exports.module.rules = (module.exports.module.rules || []).concat([
+    {
+      test: /\.js$/,
+      loader: 'babel-loader',
+      exclude: /node_modules/
+    }
+  ]);
+};
+
 
 /* Still need for dev 
 dev
-  vue loader
-  better folder structure
+  x vue loader
+  x better folder structure
   copy assets
 
 production
-  separate dev and prod build 
-  babel 
-  uglifyjs
+  x separate dev and prod build 
+  x babel 
+  x uglifyjs
 */
