@@ -4,14 +4,17 @@
   <meta charset="UTF-8">
   <title>Webpack Testing</title>
   <style>[v-cloak] {display: none;}</style>
+  <link rel = "stylesheet" type = "text/css" href = "/css/animate.css" />
 </head>
 <body>
 
-<div id="app" v-cloak>
-  <h1>{{greeting}}</h1>
+
+<h1>Oh hi Mark!!</h1>
+<div id="app">
+  <router-link to="/greeting">Go to greeting page</router-link>
+  <router-view></router-view>
 </div>
   
-<div id="greeting"></div>
 
 </body>
 </html>

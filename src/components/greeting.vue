@@ -15,7 +15,7 @@
 export default {
   data: function() {
     return {
-      greeting: 'Howdy!',
+      greeting: 'Howdy!!',
       show: true
     }
   },
@@ -29,9 +29,9 @@ export default {
 console.log("I'm in the template!")
 </script>
 
-<style>
+<style local>
 h1 {
-  font-size: 50px;
+  font-size: 25px;
 }
   
 </style>

@@ -94,11 +94,15 @@ if (process.env.NODE_ENV === 'production') {
 dev
   x vue loader
   x better folder structure
-  copy assets
+  x copy assets
 
 production
   x separate dev and prod build 
   x babel 
   x uglifyjs
   x copy assets
+
+Vue
+  Router
+
 */
