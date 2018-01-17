@@ -3,6 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const fs = require('fs');
 const webpack = require('webpack');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 
 module.exports = {
@@ -26,11 +27,6 @@ module.exports = {
         loader: 'vue-loader',
         options: {loaders: {}}
       },
-      // {
-      //   test: /\.js$/,
-      //   loader: 'babel-loader',
-      //   exclude: /node_modules/
-      // },
     ]
   },
   plugins: [
@@ -39,7 +35,11 @@ module.exports = {
       template: './src/index.html',
       inject: 'body',
     }),
+    new CopyWebpackPlugin([{from: 'src/css', to: 'css'}]),
+    new CopyWebpackPlugin([{from: 'src/img', to: 'img'}]),
+    new CopyWebpackPlugin([{from: 'src/fonts', to: 'fonts'}]),
   ],
+
 }
 
 // creates static routes out of html files in src folder  
@@ -77,7 +77,7 @@ if (process.env.NODE_ENV === 'production') {
     }),
     new webpack.LoaderOptionsPlugin({
       minimize: true
-    })
+    }),
   ])
 
   module.exports.module.rules = (module.exports.module.rules || []).concat([
@@ -100,4 +100,5 @@ production
   x separate dev and prod build 
   x babel 
   x uglifyjs
+  x copy assets
 */
