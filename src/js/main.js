@@ -9,9 +9,9 @@ Vue.use(VueRouter);
 
 
 const router = new VueRouter({
-  mode: 'history',
+  //mode: 'history',
   routes: [
-    {path: '/greeting', component: greeting},
+    {path: '/', component: greeting},
     {path: '/salutation', component: salutation},
   ]
 });

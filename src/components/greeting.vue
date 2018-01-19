@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="greeting">
     <transition 
       appear 
       enter-active-class="animated bounceInDown" 
@@ -7,7 +7,7 @@
       mode="out-in">
         <h1 v-if="show">{{greeting}}</h1>
     </transition>
-    <button @click="showGreeting">Show Greeting</button>
+    <!-- <button @click="showGreeting">Show Greeting</button> -->
   </div>
 </template>
 
@@ -15,7 +15,7 @@
 export default {
   data: function() {
     return {
-      greeting: 'Howdy!!',
+      greeting: 'Howdy!',
       show: true
     }
   },
@@ -30,8 +30,19 @@ console.log("I'm in the template!")
 </script>
 
 <style local>
-h1 {
-  font-size: 25px;
+
+.greeting {
+  display: flex;
+  justify-content: center;
+  align-items: center; 
+  height: 20rem;
+  background-color: antiquewhite;
+  margin: 5rem;
+
+}
+
+.greeting h1 {
+  font-size: 6rem;
 }
   
 </style>
