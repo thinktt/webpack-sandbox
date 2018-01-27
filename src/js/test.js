@@ -1,1 +1,5 @@
-export default {}
+export default {
+  x: 10,
+  y: 20,
+  z: 30,
+}

@@ -33,8 +33,3 @@ new Vue({
 //   el: '#greeting',
 //   render: h => h(greeting)
 // })
-
-
-
-
-
