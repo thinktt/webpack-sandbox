@@ -38,7 +38,7 @@ console.log("I'm in the template!")
   height: 20rem;
   background-color: antiquewhite;
   margin: 5rem;
-
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 .greeting h1 {

@@ -7,7 +7,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 
 module.exports = {
-  entry: './src/js/main.js',
+  entry: {index: './src/js/main.js', fun: './src/js/fun.js'},
   devtool: 'inline-source-map',
   resolve: {
     alias: {
@@ -18,7 +18,7 @@ module.exports = {
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: 'bundle.js',
+    filename: '[name].bundle.js',
   },
   module: {
     rules: [
@@ -34,6 +34,7 @@ module.exports = {
       filename: 'index.html',
       template: './src/index.html',
       inject: 'body',
+      chunks: ['index'],
     }),
     new CopyWebpackPlugin([{from: 'src/css', to: 'css'}]),
     new CopyWebpackPlugin([{from: 'src/img', to: 'img'}]),
@@ -53,6 +54,7 @@ fs.readdirSync(path.resolve('./src')).forEach(file => {
         filename: name + '/index.html',
         template: './src/' +  file,
         inject: 'body',
+        chunks: ['fun'],
       })
     );
   }
