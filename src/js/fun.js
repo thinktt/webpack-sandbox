@@ -31,35 +31,43 @@ setInterval(() => {
 document.onkeydown = (event) => {
   switch (event.keyCode) {
     case 37: // left
+      if (redYDirection === 0) break; 
       redXDirection = -1;
       redYDirection = 0; 
       break;
     case 38: // up
+      if (redXDirection === 0) break;
       redXDirection = 0;
       redYDirection = -1; 
       break;
     case 39: //right
+      if (redYDirection === 0) break;
       redXDirection = 1;
       redYDirection = 0; 
       break;
     case 40: //down
+      if (redXDirection === 0) break;  
       redXDirection = 0;
       redYDirection = 1; 
       break;
     
     case 65: // left
+      if (greenYDirection === 0) break;
       greenXDirection = -1;
       greenYDirection = 0; 
       break;
     case 87: // up
+      if (greenXDirection === 0) break;
       greenXDirection = 0;
       greenYDirection = -1; 
       break;
     case 68: //right
+      if (greenYDirection === 0) break;
       greenXDirection = 1;
       greenYDirection = 0; 
       break;
     case 83: //down
+      if (greenXDirection === 0) break;
       greenXDirection = 0;
       greenYDirection = 1; 
       break;
