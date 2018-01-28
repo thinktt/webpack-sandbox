@@ -3,79 +3,70 @@ const arena = document.getElementById('arena').getContext('2d');
 arena.fillStyle = 'black';
 arena.fillRect(0, 0, 640, 480);
 
-let greenX = 2;
-let greenY = 2; 
-let greenXDirection = 1; 
-let greenYDirection = 0; 
+const lazers = [
+  {
+    color: 'lime',
+    x: 2,
+    y: 2,
+    xDirection: 1,
+    yDirection: 0,
+    keyUp: 38,
+    keyDown: 40,
+    keyLeft: 37,
+    keyRight: 39,  
+  },
+  {
+    color: 'red',
+    x: 636,
+    y: 476,
+    xDirection: -1,
+    yDirection: 0,
+    keyUp: 87,
+    keyDown: 83,
+    keyLeft: 65,
+    keyRight: 68,  
+  },
+]
 
-let redX = 636;
-let redY = 476;
-let redXDirection = -1; 
-let redYDirection = 0; 
-
+function changeDirection(lazer, keyPressed) {
+  switch(keyPressed) {
+    case lazer.keyUp: // up
+      if (lazer.xDirection === 0) break;
+      lazer.xDirection = 0;
+      lazer.yDirection = -1; 
+      break;
+    case lazer.keyDown: //down
+      if (lazer.xDirection === 0) break;
+      lazer.xDirection = 0;
+      lazer.yDirection = 1; 
+      break;
+    case lazer.keyLeft: // left
+      if (lazer.yDirection === 0) break;
+      lazer.xDirection = -1;
+      lazer.yDirection = 0; 
+      break;
+    case lazer.keyRight: //right
+      if (lazer.yDirection === 0) break;
+      lazer.xDirection = 1;
+      lazer.yDirection = 0; 
+      break;
+  }
+}
 
 setInterval(() => {
-  //arena.clearRect(0, 0, 640, 480);
-  
-  arena.fillStyle = 'lime';
-  arena.fillRect(greenX, greenY, 2, 2);
-  greenX = greenX + greenXDirection;
-  greenY = greenY + greenYDirection; 
-  
-  arena.fillStyle = 'red';
-  arena.fillRect(redX, redY, 2, 2);
-  redX = redX + redXDirection;
-  redY = redY + redYDirection;
+  lazers.forEach((lazer) => {
+    arena.fillStyle = lazer.color;
+    arena.fillRect(lazer.x, lazer.y, 2, 2);
+    lazer.x = lazer.x + lazer.xDirection;
+    lazer.y = lazer.y + lazer.yDirection; 
+  });
 }, 25);
 
 document.onkeydown = (event) => {
-  switch (event.keyCode) {
-    case 37: // left
-      if (redYDirection === 0) break; 
-      redXDirection = -1;
-      redYDirection = 0; 
-      break;
-    case 38: // up
-      if (redXDirection === 0) break;
-      redXDirection = 0;
-      redYDirection = -1; 
-      break;
-    case 39: //right
-      if (redYDirection === 0) break;
-      redXDirection = 1;
-      redYDirection = 0; 
-      break;
-    case 40: //down
-      if (redXDirection === 0) break;  
-      redXDirection = 0;
-      redYDirection = 1; 
-      break;
-    
-    case 65: // left
-      if (greenYDirection === 0) break;
-      greenXDirection = -1;
-      greenYDirection = 0; 
-      break;
-    case 87: // up
-      if (greenXDirection === 0) break;
-      greenXDirection = 0;
-      greenYDirection = -1; 
-      break;
-    case 68: //right
-      if (greenYDirection === 0) break;
-      greenXDirection = 1;
-      greenYDirection = 0; 
-      break;
-    case 83: //down
-      if (greenXDirection === 0) break;
-      greenXDirection = 0;
-      greenYDirection = 1; 
-      break;
-    default: 
-      console.log(event.keyCode);
-  }  
+  event.preventDefault();
+  lazers.forEach( lazer => {
+    changeDirection(lazer, event.keyCode);
+  });
 };
-  
-  
-  // arena.fillStyle = 'rgba(0, 0, 200, 0.5)';
-  // arena.fillRect(30, 30, 50, 50);
+
+//arena.clearRect(0, 0, 640, 480);
