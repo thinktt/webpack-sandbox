@@ -1,5 +1,4 @@
 const arena = document.getElementById('arena').getContext('2d');
-
 arena.fillStyle = 'black';
 arena.fillRect(0, 0, 640, 480);
 
@@ -50,7 +49,12 @@ function changeDirection(lazer, keyPressed) {
       lazer.xDirection = 1;
       lazer.yDirection = 0; 
       break;
+    default: 
+      //no change was triggered
+      return false;
   }
+  // a change was triggered
+  return true; 
 }
 
 setInterval(() => {
@@ -63,10 +67,18 @@ setInterval(() => {
 }, 25);
 
 document.onkeydown = (event) => {
-  event.preventDefault();
   lazers.forEach( lazer => {
-    changeDirection(lazer, event.keyCode);
+    const changeWasTriggered = changeDirection(lazer, event.keyCode);
+    // if this was a game event then don't trigger any other browser events
+    if (changeWasTriggered) event.preventDefault();
   });
 };
 
+
+function draw(timestamp) {
+  console.log(timestamp);
+  window.requestAnimationFrame(draw); 
+}
+
+draw(); 
 //arena.clearRect(0, 0, 640, 480);
