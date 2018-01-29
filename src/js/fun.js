@@ -4,6 +4,7 @@ arena.fillStyle = 'blue';
 arena.fillRect(0, 0, arenaEl.width, arenaEl.height);
 arena.fillStyle = 'black';
 arena.fillRect(5, 5, 640, 480);
+arena.clearRect(5, 5, 640, 480);
 
 
 // arena.strokeStyle = "blue";
@@ -19,7 +20,8 @@ const lazers = [
     keyUp: 38,
     keyDown: 40,
     keyLeft: 37,
-    keyRight: 39,  
+    keyRight: 39,
+    isAlive: true,  
   },
   {
     color: 'red',
@@ -30,7 +32,8 @@ const lazers = [
     keyUp: 87,
     keyDown: 83,
     keyLeft: 65,
-    keyRight: 68,  
+    keyRight: 68,
+    isAlive: true,  
   },
 ]
 
@@ -64,12 +67,34 @@ function changeDirection(lazer, keyPressed) {
   return true; 
 }
 
+function nextSpaceIsOccupied(lazer) {
+  const {x, y, xDirection, yDirection} = lazer;
+
+  let space; 
+  if (xDirection === 1) space = arena.getImageData(x+2, y, 1, 2);
+  if (xDirection === -1) space = arena.getImageData(x-1, y, 1, 2);
+  if (yDirection === 1) space = arena.getImageData(x, y+2, 2, 1);
+  if (yDirection === -1) space = arena.getImageData(x, y-1, 2, 1);
+
+  let isEmpty = 0;
+  space.data.forEach( dataItem => isEmpty += dataItem)
+  return Boolean(isEmpty); 
+}
+
 setInterval(() => {
+  let collisionWasDetected = false; 
+  
   lazers.forEach((lazer) => {
-    arena.fillStyle = lazer.color;
-    arena.fillRect(lazer.x, lazer.y, 2, 2);
-    lazer.x = lazer.x + lazer.xDirection;
-    lazer.y = lazer.y + lazer.yDirection; 
+    if (lazer.isAlive && nextSpaceIsOccupied(lazer)) {
+      lazer.isAlive = false; 
+      collisionWasDetected = true;
+      console.log(`${lazer.color} is dead`);
+    } else if (lazer.isAlive) {
+      lazer.x = lazer.x + lazer.xDirection;
+      lazer.y = lazer.y + lazer.yDirection; 
+      arena.fillStyle = lazer.color;
+      arena.fillRect(lazer.x, lazer.y, 2, 2);
+    }
   });
 }, 25);
 

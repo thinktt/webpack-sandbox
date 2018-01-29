@@ -21,13 +21,13 @@ h1 {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  border: solid 1px; 
-  border-color: blue;
+  /* border: solid 1px;  */
+  /* border-color: blue; */
   height: 98vh;
 
 }
 
 #arena {
-  border: solid .1rem; 
-  border-color: blue;
+  /* border: solid .1rem;  */
+  /* border-color: blue; */
 }
