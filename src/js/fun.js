@@ -1,12 +1,19 @@
-const arena = document.getElementById('arena').getContext('2d');
+const arenaEl = document.getElementById('arena');
+const arena = arenaEl.getContext('2d');
+arena.fillStyle = 'blue';
+arena.fillRect(0, 0, arenaEl.width, arenaEl.height);
 arena.fillStyle = 'black';
-arena.fillRect(0, 0, 640, 480);
+arena.fillRect(5, 5, 640, 480);
+
+
+// arena.strokeStyle = "blue";
+// arena.strokeRect(0, 0, 640, 480);
 
 const lazers = [
   {
     color: 'lime',
-    x: 2,
-    y: 2,
+    x: 7,
+    y: 7,
     xDirection: 1,
     yDirection: 0,
     keyUp: 38,
@@ -16,8 +23,8 @@ const lazers = [
   },
   {
     color: 'red',
-    x: 636,
-    y: 476,
+    x: 642,
+    y: 482,
     xDirection: -1,
     yDirection: 0,
     keyUp: 87,
@@ -75,10 +82,10 @@ document.onkeydown = (event) => {
 };
 
 
-function draw(timestamp) {
-  console.log(timestamp);
-  window.requestAnimationFrame(draw); 
-}
+// function draw(timestamp) {
+//   console.log(timestamp);
+//   window.requestAnimationFrame(draw); 
+// }
 
-draw(); 
+// draw(); 
 //arena.clearRect(0, 0, 640, 480);
