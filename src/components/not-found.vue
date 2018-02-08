@@ -3,7 +3,6 @@
     <transition 
       appear 
       enter-active-class="animated bounceInDown" 
-      leave-active-class="animated bounceOut"
       mode="out-in">
         <div class="not-found-message"> 
           <h1>404</h1>
@@ -41,7 +40,7 @@ export default {
 }
 
 .greeting h1 {
-  font-size: 15rem;
+  font-size: 10rem;
   margin: 0; 
 }
 .greeting h3 {
