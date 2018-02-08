@@ -1,14 +1,14 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
-const fs = require('fs');
 const webpack = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 
 module.exports = {
-  entry: {index: './src/js/main.js', fun: './src/js/fun.js'},
+  entry:  './src/main.js',
   devtool: 'inline-source-map',
+  devServer: { historyApiFallback: true },
   resolve: {
     alias: {
       'vue$': 'vue/dist/vue.esm.js',
@@ -18,7 +18,7 @@ module.exports = {
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: '[name].bundle.js',
+    filename: 'bundle.js',
   },
   module: {
     rules: [
@@ -34,38 +34,19 @@ module.exports = {
       filename: 'index.html',
       template: './src/index.html',
       inject: 'body',
-      chunks: ['index'],
     }),
     new CopyWebpackPlugin([{from: 'src/css', to: 'css'}]),
     new CopyWebpackPlugin([{from: 'src/img', to: 'img'}]),
     new CopyWebpackPlugin([{from: 'src/fonts', to: 'fonts'}]),
+    new CopyWebpackPlugin([{from: 'src/js', to: 'js'}]),
   ],
-
 }
 
-// creates static routes out of html files in src folder  
-// and allows these pages to update automatically on dev server
-fs.readdirSync(path.resolve('./src')).forEach(file => {
-  if ( /\.(html)$/.test(file) && file !== 'index.html' ) { 
-    const name = file.substring(0, file.lastIndexOf('.'));
-    console.log('Creating html-webpack-plugin for ' + file);
-    module.exports.plugins.push(
-      new HtmlWebpackPlugin({
-        filename: name + '/index.html',
-        template: './src/' +  file,
-        inject: 'body',
-        chunks: ['fun'],
-      })
-    );
-  }
-});
-
-
+// this modifies the webpack settings for production builds 
 if (process.env.NODE_ENV === 'production') {
   module.exports.devtool = '#source-map';
-  // http://vue-loader.vuejs.org/en/workflow/production.html
   module.exports.plugins = (module.exports.plugins || []).concat([
-    new CleanWebpackPlugin(['dist/*', 'dist/**/*']),
+    new CleanWebpackPlugin(['dist']),
     new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV: '"production"'
@@ -90,21 +71,3 @@ if (process.env.NODE_ENV === 'production') {
     }
   ]);
 };
-
-
-/* Still need for dev 
-dev
-  x vue loader
-  x better folder structure
-  x copy assets
-
-production
-  x separate dev and prod build 
-  x babel 
-  x uglifyjs
-  x copy assets
-
-Vue
-  Router
-
-*/
