@@ -17,11 +17,13 @@ const lazers = [
     y: 7,
     xDirection: 1,
     yDirection: 0,
-    keyUp: 38,
-    keyDown: 40,
-    keyLeft: 37,
-    keyRight: 39,
-    isAlive: true,  
+    keyUp: 87,
+    keyDown: 83,
+    keyLeft: 65,
+    keyRight: 68,
+    isAlive: true,
+    velocity: 2,
+    spaceLeftToFill: 0,  
   },
   {
     color: 'red',
@@ -29,11 +31,13 @@ const lazers = [
     y: 482,
     xDirection: -1,
     yDirection: 0,
-    keyUp: 87,
-    keyDown: 83,
-    keyLeft: 65,
-    keyRight: 68,
+    keyUp: 38,
+    keyDown: 40,
+    keyLeft: 37,
+    keyRight: 39,
     isAlive: true,  
+    velocity: 1,
+    spaceLeftToFill: 0,  
   },
 ]
 
@@ -71,32 +75,32 @@ function nextSpaceIsOccupied(lazer) {
   const {x, y, xDirection, yDirection} = lazer;
 
   let space; 
-  if (xDirection === 1) space = arena.getImageData(x+2, y, 1, 2);
-  if (xDirection === -1) space = arena.getImageData(x-1, y, 1, 2);
-  if (yDirection === 1) space = arena.getImageData(x, y+2, 2, 1);
-  if (yDirection === -1) space = arena.getImageData(x, y-1, 2, 1);
+  if (xDirection > 0) space = arena.getImageData(x+2, y, 1, 2);
+  if (xDirection < 0) space = arena.getImageData(x-1, y, 1, 2);
+  if (yDirection > 0) space = arena.getImageData(x, y+2, 2, 1);
+  if (yDirection < 0) space = arena.getImageData(x, y-1, 2, 1);
 
   let isEmpty = 0;
   space.data.forEach( dataItem => isEmpty += dataItem)
   return Boolean(isEmpty); 
 }
 
-setInterval(() => {
-  let collisionWasDetected = false; 
+// setInterval(() => {
+//   let collisionWasDetected = false; 
   
-  lazers.forEach((lazer) => {
-    if (lazer.isAlive && nextSpaceIsOccupied(lazer)) {
-      lazer.isAlive = false; 
-      collisionWasDetected = true;
-      console.log(`${lazer.color} is dead`);
-    } else if (lazer.isAlive) {
-      lazer.x = lazer.x + lazer.xDirection;
-      lazer.y = lazer.y + lazer.yDirection; 
-      arena.fillStyle = lazer.color;
-      arena.fillRect(lazer.x, lazer.y, 2, 2);
-    }
-  });
-}, 25);
+//   lazers.forEach((lazer) => {
+//     if (lazer.isAlive && nextSpaceIsOccupied(lazer)) {
+//       lazer.isAlive = false; 
+//       collisionWasDetected = true;
+//       console.log(`${lazer.color} is dead`);
+//     } else if (lazer.isAlive) {
+//       lazer.x = lazer.x + lazer.xDirection;
+//       lazer.y = lazer.y + lazer.yDirection; 
+//       arena.fillStyle = lazer.color;
+//       arena.fillRect(lazer.x, lazer.y, 2, 2);
+//     }
+//   });
+// }, 1);
 
 document.onkeydown = (event) => {
   lazers.forEach( lazer => {
@@ -107,10 +111,46 @@ document.onkeydown = (event) => {
 };
 
 
-// function draw(timestamp) {
-//   console.log(timestamp);
-//   window.requestAnimationFrame(draw); 
-// }
+function draw(timestamp) {
+  let collisionWasDetected = false;
+  let shouldContinue = true;  
+  
+  lazers.forEach((lazer) => {
+    console.log(lazer.velocity); 
+    lazer.spaceLeftToFill = lazer.velocity; 
+  });
+  
+  //while (shouldContinue) {
+    lazers.forEach((lazer) => {
+      //check for collision 
+      if (lazer.isAlive && nextSpaceIsOccupied(lazer)) {
+        lazer.isAlive = false; 
+        collisionWasDetected = true;
+        console.log(`${lazer.color} is dead`);
+        shouldContinue = false; 
 
-// draw(); 
+        // fill next space
+      } else if (lazer.isAlive && lazer.spaceLeftToFill) {
+        lazer.x = lazer.x + lazer.xDirection;
+        lazer.y = lazer.y + lazer.yDirection; 
+        arena.fillStyle = lazer.color;
+        arena.fillRect(lazer.x, lazer.y, 2, 2);
+        lazer.spaceLeftToFill--; 
+        //console.log(lazer.spaceLeftToFill);
+        
+        if (lazer.spaceLeftToFill > 0) {
+          shouldContinue = true;
+        } else { 
+          shouldContinue = false;
+        }
+
+      }
+    });
+  //}
+
+
+  window.requestAnimationFrame(draw); 
+}
+
+draw(); 
 //arena.clearRect(0, 0, 640, 480);
