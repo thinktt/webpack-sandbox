@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import greeting from 'components/greeting.vue';
 import  salutation from 'components/salutation.vue'; 
+import notFound from 'components/not-found.vue'; 
 import VueRouter from 'vue-router';
 
 Vue.use(VueRouter);
@@ -11,6 +12,7 @@ const router = new VueRouter({
   routes: [
     {path: '/', component: greeting},
     {path: '/salutation', component: salutation},
+    {path: '*', component: notFound},
   ]
 });
 
